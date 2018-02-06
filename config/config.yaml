@@ -1,0 +1,18 @@
+---
+production:
+  use_cors: false
+  use_helmet: false
+  port: 8080
+  logFile: "./prod.log"
+  loggerLevel: info
+  urlMongo: sabius_alpha_db
+  portMongo: 27017
+  
+development:
+  use_cors: true
+  use_helmet: true
+  port: 8080
+  logFile: "./dev.log"
+  loggerLevel: info
+  urlMongo: localhost
+  portMongo: 27017
