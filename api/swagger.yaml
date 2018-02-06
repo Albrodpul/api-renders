@@ -23,12 +23,12 @@ consumes:
 produces:
 - "application/json"
 paths:
-  /:
+  /renders:
     get:
       tags:
       - "render"
       description: "Returns all renders"
-      operationId: "get"
+      operationId: "getRenders"
       parameters: []
       responses:
         200:
@@ -41,13 +41,84 @@ paths:
         500:
           description: "Internal Server Error"
       x-swagger-router-controller: "Render"
+    post:
+      tags:
+        - "render"
+      description: "Insert a new render"
+      operationId: "insertRender"
+      parameters:
+      - name: "render"
+        in: body
+        description: "The render JSON you want to post"
+        required: true
+        schema: 
+          title: "Renders"
+          type: "array"
+          items:
+            $ref: "#/definitions/Render"
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad request"
+        409:
+          description: "Conflict"
+        422:
+          description: "Unprocessable Entity"
+        500:
+          description: "Internal Server Error"
+      x-swagger-router-controller: "Render" 
+  /render/{id}:
+    get:
+      tags:
+      - "render"
+      description: "Return an existing render"
+      operationId: "getRender"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Id of an existing render"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Render response"
+          schema:
+            type: "array"
+            title: "Renders"
+            items:
+              $ref: "#/definitions/Render"
+        404:
+          description: "Not found"
+        500:
+          description: "Database error"
+      x-swagger-router-controller: "Render"    
+    delete:
+      tags:
+      - "render"
+      description: "Delete an existing render"
+      operationId: "deleteRender"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Id of an existing render"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "Deleted render"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+      x-swagger-router-controller: "Render"                
 definitions:
   Render:
     type: "object"
     properties:
       id:
         type: "string"
-      model:
+      sampleModel:
         type: "string"
       view:
         type: "string"

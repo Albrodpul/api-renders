@@ -1,10 +1,10 @@
 "use strict";
 
 module.exports = {
-  getGroups: getGroups,
-  getGroup: getGroup,
-  insertGroup: insertGroup,
-  deleteGroup: deleteGroup
+  getRenders: getRenders,
+  getRender: getRender,
+  insertRender: insertRender,
+  deleteRender: deleteRender
 };
 
 const assert = require("assert");
@@ -15,14 +15,13 @@ var config = require("../config/config");
 
 var logger = require("../config/logConfig");
 
-var uri = "mongodb://" + config.urlMongo + ":" + config.portMongo + "/sabius";
+var uri = "mongodb://" + config.urlMongo + ":" + config.portMongo + "/tfg1718-arp";
 mongoose.Promise = global.Promise;
 
 var promise = mongoose.connect(uri);
 
-function getGroups(callback) {
-  modelsMongo.find({
-  }, function (err, data) {
+function getRenders(callback) {
+  modelsMongo.find({}, function (err, data) {
     if (err) {
       callback(err, null); //internal server error
     } else {
@@ -31,10 +30,9 @@ function getGroups(callback) {
   });
 }
 
-function getGroup(groupName, year, callback) {
+function getRender(id, callback) {
   modelsMongo.find({
-    "groupName": groupName,
-    "year": year
+    "id": id
   }, function (err, data) {
     if (err) {
       callback(err, null); //internal server error
@@ -48,12 +46,10 @@ function getGroup(groupName, year, callback) {
   });
 }
 
-function insertGroup(newData, callback) {
-  var groupName = newData[0].groupName;
-  var year = newData[0].year;
+function insertRender(newData, callback) {
+  var id = newData[0].id;
   modelsMongo.find({
-    "groupName": groupName,
-    "year": year
+    "id": id
   }, function (err, data) {
     if (err) {
       callback(err, null); //internal server error
@@ -75,10 +71,9 @@ function insertGroup(newData, callback) {
   })
 }
 
-function deleteGroup(groupName, year, callback) {
+function deleteRender(id, callback) {
   modelsMongo.find({
-    "groupName": groupName,
-    "year": year
+    "id": id
   }, function (err, data) {
     if (err) {
       callback(err, null); //internal server error
@@ -86,8 +81,7 @@ function deleteGroup(groupName, year, callback) {
       callback(null, null); //not found
     } else {
       modelsMongo.remove({
-        "groupName": groupName,
-        "year": year
+        "id": id
       }, function (err, result) {
         if (err) {
           callback(err, null); //internal server error
@@ -98,5 +92,3 @@ function deleteGroup(groupName, year, callback) {
     }
   });
 }
-
-

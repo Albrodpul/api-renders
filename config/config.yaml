@@ -5,8 +5,8 @@ production:
   port: 8080
   logFile: "./prod.log"
   loggerLevel: info
-  urlMongo: sabius_alpha_db
-  portMongo: 27017
+  urlMongo: ds159344.mlab.com
+  portMongo: 59344
   
 development:
   use_cors: true
