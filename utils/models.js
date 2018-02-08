@@ -1,7 +1,12 @@
 "use strict";
 var mongoose = require("mongoose");
 var config = require("../config/config");
-var uri = "mongodb://test:test@ds159344.mlab.com:59344/tfg1718-arp";
+var uri;
+if (process.env.NODE_ENV == "development") {
+  uri = "mongodb://localhost:8080/tfg1718-arp";
+} else {
+  uri = "mongodb://test:test@ds159344.mlab.com:59344/tfg1718-arp";
+}
 var promise = mongoose.connect(uri);
 // mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;

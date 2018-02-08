@@ -15,7 +15,14 @@ var config = require("../config/config");
 
 var logger = require("../config/logConfig");
 
-var uri = "mongodb://test:test@ds159344.mlab.com:59344/tfg1718-arp";
+var port = process.env.PORT || 8080;
+var uri;
+if (port == 8080) {
+  uri = "mongodb://localhost:27017/tfg1718-arp";
+} else {
+  uri = "mongodb://test:test@ds159344.mlab.com:59344/tfg1718-arp";
+}
+
 mongoose.Promise = global.Promise;
 
 var promise = mongoose.connect(uri);
