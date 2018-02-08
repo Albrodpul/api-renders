@@ -34,8 +34,15 @@ app.use(
 );
 app.use(methodOverride());
 app.use(express.static(__dirname + "/public"));
-app.use(cors());
-logger.info("Improving security using some headers");
+
+if (config.use_cors) {
+  logger.info("Adding Access-Control-Allow-Origin: *");
+  app.use(cors());
+}
+if (config.use_helmet) {
+  logger.info("Improving security using some headers");
+  app.use(helmet());
+}
 
 // Bypassing 405 status put by swagger when no request handler is defined
 app.options("/*", (req, res, next) => {
