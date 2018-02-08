@@ -15,7 +15,7 @@ var config = require("../config/config");
 
 var logger = require("../config/logConfig");
 
-var uri = "mongodb://" + config.urlMongo + ":" + config.portMongo + "/tfg1718-arp";
+var uri = "mongodb://test:test@ds159344.mlab.com:59344/tfg1718-arp";
 mongoose.Promise = global.Promise;
 
 var promise = mongoose.connect(uri);
