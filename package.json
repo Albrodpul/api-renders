@@ -4,7 +4,8 @@
   "description": "A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jasmine-node spec"
   },
   "repository": {
     "type": "git",
