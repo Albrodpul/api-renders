@@ -1,6 +1,6 @@
 var request = require("request");
 
-var baseUrl = "https://api-renders.herokuapp.com/api/v1/renders";
+var baseUrl = "http://localhost:8080/api/v1/renders";
 
 describe("Renders API Server", function () {
     it("Get renders", function (done) {
@@ -12,9 +12,9 @@ describe("Renders API Server", function () {
         });
     });
 
-    it("Get a render", function (done) {
+    it("Get a render by id", function (done) {
         var id = "test";
-        request.get(baseUrl + "/" + id, function (err, res, body) {
+        request.get(baseUrl + "?id=" + id, function (err, res, body) {
             var json = JSON.parse(body);
             var idReceived = json[0].id;
             expect(json.length).toBe(1);
@@ -24,10 +24,39 @@ describe("Renders API Server", function () {
         });
     });
 
-    it("Get non existing render", function (done) {
+    it("Get a render by type", function (done) {
+        var type = "ng";
+        request.get(baseUrl + "?type=" + type, function (err, res, body) {
+            var json = JSON.parse(body);
+            var typeReceived = json[0].type;
+            expect(json.length).toBeGreaterThan(0);
+            expect(typeReceived).toEqual(type);
+            expect(res.statusCode).toBe(200);
+            done();
+        });
+    });
+
+    it("Get non existing render by id", function (done) {
         var id = "prueba";
-        request.get(baseUrl + "/" + id, function (err, res, body) {
+        request.get(baseUrl + "?id=" + id, function (err, res, body) {
             expect(res.statusCode).toBe(404);
+            done();
+        });
+    });
+
+    it("Get non existing render by type", function (done) {
+        var type = "ng2";
+        request.get(baseUrl + "?type=" + type, function (err, res, body) {
+            expect(res.statusCode).toBe(404);
+            done();
+        });
+    });
+
+    it("Get render by id and type", function (done) {
+        var id = "prueba";
+        var type = "ng2";
+        request.get(baseUrl + "?id=" + id + "&type=" + type, function (err, res, body) {
+            expect(res.statusCode).toBe(400);
             done();
         });
     });
@@ -149,7 +178,7 @@ describe("Renders API Server", function () {
 
     it("Check render has been created", function (done) {
         var id = "prueba";
-        request.get(baseUrl + "/" + id, function (err, res, body) {
+        request.get(baseUrl + "?id=" + id, function (err, res, body) {
             var json = JSON.parse(body);
             var idReceived = json[0].id;
             expect(json.length).toBe(1);
@@ -196,7 +225,7 @@ describe("Renders API Server", function () {
 
     it("Check render has been deleted", function (done) {
         var id = "prueba";
-        request.get(baseUrl + "/" + id, function (err, res, body) {
+        request.get(baseUrl + "?id=" + id, function (err, res, body) {
             expect(res.statusCode).toBe(404);;
             done();
         });

@@ -13,31 +13,21 @@ exports.getRenders = function (args, res, next) {
    *
    * returns List
    **/
-  logger.info("Get Renders");
-  mongo.getRenders(function (err, data) {
-    if (err) {
-      logger.info(err);
-      res.sendStatus(500); // internal server error
-    } else {
-      logger.info("Get!");
-      res.send(data);
-    }
-  });
-}
-
-exports.getRender = function (args, res, next) {
-  /**
-   * Return an existing render
-   *
-   * returns List
-   **/
   var id = args.id.value;
-  logger.info("Get " + id);
-  if (!id) {
-    logger.info("Bad request");
-    res.sendStatus(400); // bad request
-  } else {
-    mongo.getRender(id, function(err, data) {
+  var type = args.type.value;
+  if (!id && !type) {
+    logger.info("Get Renders");
+    mongo.getRenders(function (err, data) {
+      if (err) {
+        logger.info(err);
+        res.sendStatus(500); // internal server error
+      } else {
+        logger.info("Get!");
+        res.send(data);
+      }
+    });
+  } else if (id && !type) {
+    mongo.getRenderById(id, function (err, data) {
       if (err) {
         logger.info(err);
         res.sendStatus(500); // internal server error
@@ -49,6 +39,22 @@ exports.getRender = function (args, res, next) {
         res.sendStatus(404);
       }
     });
+  } else if (!id && type) {
+    mongo.getRenderByType(type, function (err, data) {
+      if (err) {
+        logger.info(err);
+        res.sendStatus(500); // internal server error
+      } else if (data) {
+        logger.info("Get render!");
+        res.send(data);
+      } else {
+        logger.info("Not found");
+        res.sendStatus(404);
+      }
+    });
+  } else if (id && type) {
+    logger.info("Bad request");
+    res.sendStatus(400); // bad request
   }
 }
 
@@ -86,7 +92,7 @@ exports.insertRender = function (args, res, next) {
   }
 }
 
-exports.deleteRender = function(args, res, next) {
+exports.deleteRender = function (args, res, next) {
   /**
    * Delete an existing render
    *
@@ -99,7 +105,7 @@ exports.deleteRender = function(args, res, next) {
     logger.info("Bad Request");
     res.sendStatus(400).end();
   } else {
-    mongo.deleteRender(id, function(err, result) {
+    mongo.deleteRender(id, function (err, result) {
       if (err) {
         logger.info(err);
         res.sendStatus(500).end(); // internal server error

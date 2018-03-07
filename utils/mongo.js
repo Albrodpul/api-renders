@@ -2,7 +2,8 @@
 
 module.exports = {
   getRenders: getRenders,
-  getRender: getRender,
+  getRenderById: getRenderById,
+  getRenderByType: getRenderByType,
   insertRender: insertRender,
   deleteRender: deleteRender
 };
@@ -37,9 +38,25 @@ function getRenders(callback) {
   });
 }
 
-function getRender(id, callback) {
+function getRenderById(id, callback) {
   modelsMongo.find({
     "id": id
+  }, function (err, data) {
+    if (err) {
+      callback(err, null); //internal server error
+    } else {
+      if (data.length > 0) {
+        callback(null, data); //get group
+      } else {
+        callback(null, null); //not found
+      }
+    }
+  });
+}
+
+function getRenderByType(type, callback) {
+  modelsMongo.find({
+    "type": type
   }, function (err, data) {
     if (err) {
       callback(err, null); //internal server error
