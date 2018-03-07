@@ -26,10 +26,10 @@ info:
   license:
     name: "MIT"
     url: "http://opensource.org/licenses/MIT"
-host: "localhost:8080"
+host: "api-renders.herokuapp.com"
 basePath: "/api/v1"
 schemes:
-- "http"
+- "https"
 consumes:
 - "application/json"
 produces:
